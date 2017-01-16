@@ -1,12 +1,12 @@
 $ProjectDirectory = (Get-Item $PSScriptRoot).parent.FullName
-$Module = "$ProjectDirectory\Audit.ADMSL.psd1"
-$ModuleName = 'Audit.ADMSL'
+$Module = "$ProjectDirectory\Win.ServerInformation.psd1"
+$ModuleName = 'Win.ServerInformation'
 
 Import-Module $Module
 
 InModuleScope $ModuleName {
     $PSVersion = $PSVersionTable.PSVersion.Major
-    Describe -Name "ADMSL Audit PS$PSVersion" -Fixture {
+    Describe -Name "Windows Server Information PS$PSVersion" -Fixture {
         Mock Get-WmiObject {}
         Mock Get-ServerLocation {}
         Context -Name "Get-ServerData" -Fixture {

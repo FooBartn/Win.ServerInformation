@@ -1,21 +1,30 @@
 class ServerData {
     # Properties
-    [string] $Name
+    [string] $ComputerName
     [string] $IP
     [string] $OperatingSystem
     [string] $ServicePack
+    [string] $LastPatchDate
     [string] $PagefileLocation
     [string] $PagefileSize
     [string] $DnsHostName
     [string] $Domain
+    [string] $DomainRole
+    [string] $TimeZone
+    [string] $NtpType
+    [string] $NtpServer
     [string] $Architecture
     [string] $OutOfBandIP
+    [string] $WsusServer
+    [string] $WsusTargetGroup
+    [string] $WsusTargetGroupEnabled
     [string] $RamGB
     [int] $PhysProcessors
     [int] $LogProcessors
     [string] $DNS1
     [string] $DNS2
     [string] $Serial
+    [string] $BiosVersion
     [string] $Manufacturer
     [string] $Model
     [string] $InstallDate

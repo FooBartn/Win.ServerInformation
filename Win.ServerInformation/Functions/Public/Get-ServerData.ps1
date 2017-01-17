@@ -73,7 +73,7 @@ Function Get-ServerData () {
             DomainRole = $DomainRole
             TimeZone = $TimeZone
             NtpType = $NtpData.Type
-            NtpServer = $NtpData.Server
+            NtpServer = $NtpData.NtpServer
             Architecture = $OsInfo.OSArchitecture
             OutOfBandIP = $ConsoleIP
             WsusServer = $WsusInfo.WUServer

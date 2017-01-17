@@ -4,15 +4,17 @@ This module is used to gather data from a Windows operating system
 
 Usage:
 =========
-Import the module and run:
-Get-ServerData -ComputerName localhost
+Examples:
+- Get-ServerData -ComputerName localhost -Verbose
+- Get-SecurityData -ComputerName localhost -Verbose
+- Get-AdminUserData -ComputerName localhost -Verbose
 
-You could use RSJobs and AD to get everything like:
+You could use PoSHRSJobs and AD to get everything like:
 ```PowerShell
 $Servers = Get-ADComputer -Filter {operatingsystem -Like "Windows *server*"} |
     Select-Object -ExpandProperty Name
 
-$Servers | Start-RsJob -ScriptBlock {
+$Servers | Start-RSJob -ScriptBlock {
     Import-Module Win.ServerInformation -ErrorAction Stop
     Get-ServerData -Name $_
 }

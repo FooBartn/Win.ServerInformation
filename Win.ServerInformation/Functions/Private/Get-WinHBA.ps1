@@ -1,4 +1,4 @@
-# Origian Script by Ben Wilkerson (https://social.technet.microsoft.com/profile/ben%20wilkinson/)
+# Original Script by Ben Wilkerson (https://social.technet.microsoft.com/profile/ben%20wilkinson/)
 
 function Get-WinHBA {  
     param(

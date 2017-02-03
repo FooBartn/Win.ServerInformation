@@ -51,6 +51,12 @@ Function Get-ServerData () {
         Write-Verbose "Gathering NTP data for $ComputerName"
         $NtpData = Get-NtpData @CommonParams
 
+        Write-Verbose "Gathering HBA Data for $ComputerName"
+        $HBAData = Get-WinHBA @CommonParams
+
+        Write-Verbose "Gathering NIC Data for $ComputerName"
+        $NICData = Get-WinNIC @CommonParams
+
         # Convert Install Date
         $InstallDate = [datetime]::ParseExact($OsInfo.InstallDate.SubString(0,8),"yyyyMMdd",$null);
         $InstallDate = $InstallDate.ToShortDateString()
@@ -60,36 +66,60 @@ Function Get-ServerData () {
         
         # Assign Data To Class Params
         Write-Verbose 'Creating PSObject for Server Data'
-        [ServerData]@{
-            ComputerName = $SystemInfo.Name
-            IP = $IP
-            OperatingSystem = $OsInfo.Caption
-            ServicePack = $OsInfo.ServicePackMajorVersion
-            LastPatchDate = [DateTime]$PatchInfo.InstalledOn
-            PagefileLocation = $Pagefile.Name
-            PagefileSize = $Pagefile.AllocatedBaseSize 
-            DnsHostName = $SystemInfo.DnsHostName
-            Domain = $SystemInfo.Domain
-            DomainRole = $DomainRole
-            TimeZone = $TimeZone
-            NtpType = $NtpData.Type
-            NtpServer = $NtpData.NtpServer
-            Architecture = $OsInfo.OSArchitecture
-            OutOfBandIP = $ConsoleIP
-            WsusServer = $WsusInfo.WUServer
-            WsusTargetGroup = $WsusInfo.TargetGroup
-            WsusTargetGroupEnabled = $WsusInfo.TargetGroupEnabled
-            RamGB = ($SystemInfo.TotalPhysicalMemory/1GB).ToString("#.##")
-            PhysProcessors = $SystemInfo.NumberOfProcessors
-            LogProcessors = $SystemInfo.NumberOfLogicalProcessors
-            DNS1 = $ServerDNS[0]
-            DNS2 = $ServerDNS[1]
-            Serial = $BiosInfo.SerialNumber
-            BiosVersion = $BiosInfo.SMBIOSBIOSVersion
-            Manufacturer = $SystemInfo.Manufacturer
-            Model = $SystemInfo.Model
-            InstallDate = $InstallDate
+        $ServerData = [ServerData]@{
+            ComputerName            = $SystemInfo.Name
+            IP                      = $IP
+            OperatingSystem         = $OsInfo.Caption
+            ServicePack             = $OsInfo.ServicePackMajorVersion
+            LastPatchDate           = [DateTime]$PatchInfo.InstalledOn
+            PagefileLocation        = $Pagefile.Name
+            PagefileSize            = $Pagefile.AllocatedBaseSize 
+            DnsHostName             = $SystemInfo.DnsHostName
+            Domain                  = $SystemInfo.Domain
+            DomainRole              = $DomainRole
+            TimeZone                = $TimeZone
+            NtpType                 = $NtpData.Type
+            NtpServer               = $NtpData.NtpServer
+            Architecture            = $OsInfo.OSArchitecture
+            OutOfBandIP             = $ConsoleIP
+            WsusServer              = $WsusInfo.WUServer
+            WsusTargetGroup         = $WsusInfo.TargetGroup
+            WsusTargetGroupEnabled  = $WsusInfo.TargetGroupEnabled
+            RamGB                   = ($SystemInfo.TotalPhysicalMemory/1GB).ToString("#.##")
+            PhysProcessors          = $SystemInfo.NumberOfProcessors
+            LogProcessors           = $SystemInfo.NumberOfLogicalProcessors
+            DNS1                    = $ServerDNS[0]
+            DNS2                    = $ServerDNS[1]
+            NumberOfHBAs            = $HBAData.Count
+            NumberOfNICs            = $NICData.Count
+            Serial                  = $BiosInfo.SerialNumber
+            BiosVersion             = $BiosInfo.SMBIOSBIOSVersion
+            Manufacturer            = $SystemInfo.Manufacturer
+            Model                   = $SystemInfo.Model
+            InstallDate             = $InstallDate
         }
+
+        for ($Num = 0; $Num -lt $HBAData.Count; $Num++) {
+            $ServerData."Hba$Num`WWNN"              = $HBAData[$Num].WWNN
+            $ServerData."Hba$Num`WWPN"              = $HBAData[$Num].WWPN
+            $ServerData."Hba$Num`Active"            = $HBAData[$Num].Active
+            $ServerData."Hba$Num`DriverName"        = $HBAData[$Num].DriverName
+            $ServerData."Hba$Num`DriverVersion"     = $HBAData[$Num].DriverVersion
+            $ServerData."Hba$Num`FirmwareVersion"   = $HBAData[$Num].FirmwareVersion
+            $ServerData."Hba$Num`Model"             = $HBAData[$Num].Model
+            $ServerData."Hba$Num`Description"       = $HBAData[$Num].ModelDescription
+            $ServerData."Hba$Num`UniqueAdapterID"   = $HBAData[$Num].UniqueAdapterID
+            $ServerData."Hba$Num`NumberOfPorts"     = $HBAData[$Num].NumberOfPorts      
+        }
+
+        for ($Num = 0; $Num -lt $NICData.Count; $Num++) {
+            $ServerData."Nic$Num`Name"          = $NICData[$Num].NetConnectionID
+            $ServerData."Nic$Num`Device"        = $NICData[$Num].Name
+            $ServerData."Nic$Num`MacAddress"    = $NICData[$Num].MACAddress
+            $ServerData."Nic$Num`Manufacturer"  = $NICData[$Num].Manufacturer  
+        }
+
+        $ServerData
     } catch [System.UnauthorizedAccessException] {
         Write-Error "Authentication Failed on $ComputerName"
     } catch [System.OutOfMemoryException] {

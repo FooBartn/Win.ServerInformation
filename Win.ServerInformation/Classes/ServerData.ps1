@@ -23,6 +23,48 @@ class ServerData {
     [int] $LogProcessors
     [string] $DNS1
     [string] $DNS2
+    [int] $NumberOfHBAs
+    [string] $Hba0WWNN
+    [string] $Hba0WWPN
+    [string] $Hba0Active
+    [string] $Hba0DriverName
+    [string] $Hba0DriverVersion
+    [string] $Hba0FirmwareVersion
+    [string] $Hba0Model
+    [string] $Hba0Description
+    [string] $Hba0UniqueAdapterID
+    [string] $Hba0NumberOfPorts
+    [string] $Hba1WWNN
+    [string] $Hba1WWPN
+    [string] $Hba1Active
+    [string] $Hba1DriverName
+    [string] $Hba1DriverVersion
+    [string] $Hba1FirmwareVersion
+    [string] $Hba1Model
+    [string] $Hba1Description
+    [string] $Hba1UniqueAdapterID
+    [string] $Hba1NumberOfPorts
+    [string] $NumberOfNICs
+    [string] $Nic0Name
+    [string] $Nic0Device
+    [string] $Nic0MacAddress
+    [string] $Nic0Manufacturer
+    [string] $Nic1Name
+    [string] $Nic1Device
+    [string] $Nic1MacAddress
+    [string] $Nic1Manufacturer
+    [string] $Nic2Name
+    [string] $Nic2Device
+    [string] $Nic2MacAddress
+    [string] $Nic2Manufacturer
+    [string] $Nic3Name
+    [string] $Nic3Device
+    [string] $Nic3MacAddress
+    [string] $Nic3Manufacturer
+    [string] $Nic4Name
+    [string] $Nic4Device
+    [string] $Nic4MacAddress
+    [string] $Nic4Manufacturer
     [string] $Serial
     [string] $BiosVersion
     [string] $Manufacturer
